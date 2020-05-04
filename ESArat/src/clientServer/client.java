@@ -1,4 +1,4 @@
-package esarat.screenShare;
+package clientServer;
 
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;

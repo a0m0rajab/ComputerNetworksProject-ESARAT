@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package esarat;
+package userInterface;
 
-import esarat.screenShare.client;
-import esarat.screenShare.server;
+import clientServer.client;
+import clientServer.server;
 
 /**test
  *

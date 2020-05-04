@@ -1,4 +1,4 @@
-package esarat.screenShare;
+package clientServer;
 
 import java.awt.AWTException;
 import java.awt.Rectangle;
