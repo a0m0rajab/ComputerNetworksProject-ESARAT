@@ -7,16 +7,19 @@ package userInterface;
 
 import clientServer.client;
 import clientServer.server;
+import java.io.Console;
 
-/**test
+/**
+ * test
  *
  * @author rajab
  */
 public class Entry extends javax.swing.JFrame {
 
+    Thread TransmitterThread;
+    Thread RecieverThread;
     client clientObj = new client();
     server serverObj = new server();
-   
 
     /**
      * Creates new form Entry
@@ -624,15 +627,36 @@ public class Entry extends javax.swing.JFrame {
         });
     }
 
+//    https://stackoverflow.com/questions/26012709/java-swing-gui-blocked-by-method-only-when-method-is-called-on-button-click
     public void shareScreen() {
-      
-                        serverObj.start(Integer.parseInt(txt_transmitter_port.getText()), txt_transmitter_password.getText());
-
+        TransmitterThread
+                = new Thread() {
+            public void run() {
+                try {
+                    serverObj.start(Integer.parseInt(txt_transmitter_port.getText()), txt_transmitter_password.getText());
+                } catch (Exception e) {
+                     System.err.print(e);
+                    e.printStackTrace();
+                }
+            }
+        };
+        TransmitterThread.start();
     }
 
     public void getScreen() {
-        clientObj.start(txt_reciever_ip.getText(), Integer.parseInt(txt_reciever_port.getText()), txt_reciever_password.getText());
+        RecieverThread = new Thread() {
+            public void run() {
+                try {
+                    clientObj.start(txt_reciever_ip.getText(), Integer.parseInt(txt_reciever_port.getText()), txt_reciever_password.getText());
+                    
+                } catch (Exception e) {
+                    System.err.print(e);
+                     e.printStackTrace();
+                }
 
+            }
+        };
+        RecieverThread.start();
     }
 
     public void closeServer() {
@@ -672,13 +696,18 @@ public class Entry extends javax.swing.JFrame {
     public void BackButtonTransmitter() {
         showMain();
         serverObj.close();
-
+        if (TransmitterThread != null) {
+            TransmitterThread.interrupt();
+            System.out.println("interrupted");
+        }
     }
 
     public void BackButtonReciever() {
         showMain();
-                clientObj.close();
-
+        clientObj.close();
+        if (RecieverThread != null) {
+            RecieverThread.interrupt();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
